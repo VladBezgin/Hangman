@@ -1,33 +1,40 @@
 import java.util.Scanner;
 
 public class Menu {
-    private Scanner in = new Scanner(System.in);
+    private final static int QUIT = 0;
+    private final static int START = 1;
+    private Scanner scanner = new Scanner(System.in);
 
 
     private void printMenu() {
-        System.out.println("0 - Выход из меню");
-        System.out.println("1 - Игра Виселица");
+        System.out.println(QUIT + " - Выход из меню");
+        System.out.println(START + " - Игра Виселица");
         System.out.print("Ввод: ");
     }
 
-    public void run() {
+    public void start() {
 
-        Dictionary dictionary = new Dictionary();
         HangmanGame hangmanGame = new HangmanGame();
         int menuOption = 1;
+
         do {
             printMenu();
-            menuOption = in.nextInt();
-            switch (menuOption) {
-                case 0:
-                    System.out.println("Конец сессии!");
-                    break;
-                case 1:
-                    hangmanGame.run(dictionary.randomWord());
-                    break;
-                default:
-                    System.out.println("Неверный ввод!");
+            if (scanner.hasNextInt()) {
+                menuOption = scanner.nextInt();
+                switch (menuOption) {
+                    case QUIT:
+                        System.out.println("Конец сессии!");
+                        break;
+                    case START:
+                        hangmanGame.start(Dictionary.randomWord("src/resources/dictionary.txt"));
+                        break;
+                    default:
+                        System.out.println("Невернный ввод! Введите " + QUIT + " или " + START + ". Ваш ввод: " + menuOption);
+                }
+            } else {
+                String invalidInput = scanner.next();
+                System.out.println("Невернный ввод! Введите " + QUIT + " или " + START + ". Ваш ввод: " + invalidInput);
             }
-        } while (menuOption != 0);
+        } while (menuOption != QUIT);
     }
 }
